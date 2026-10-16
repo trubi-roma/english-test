@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Homework: Phrasal Verbs</title>
+<style>
+:root{--bg:#f7f5ef;--card:#fffefa;--ink:#252b2a;--muted:#68716d;--accent:#52796f;--accent2:#dce9df;--bad:#b84040;--good:#28734b;--line:#e4e5dc}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}
+.wrap{max-width:900px;margin:auto;padding:24px 16px 56px}.hero{padding:30px;border-radius:24px;background:#e5ece3;margin-bottom:20px}
+.kicker{text-transform:uppercase;letter-spacing:.14em;font-size:12px;font-weight:800;color:var(--accent)}h1{font-size:clamp(28px,5vw,42px);line-height:1.08;margin:8px 0 12px}h2{font-size:22px;margin:0 0 8px}.sub{color:#4f5d56;max-width:650px}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.pill{background:#fffefa;border:1px solid #d5dfd5;border-radius:999px;padding:6px 11px;font-size:13px}
+.progressbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:18px 0}.bar{height:8px;background:#e8eae3;border-radius:99px;overflow:hidden;margin-top:9px}.bar>div{height:100%;width:0;background:var(--accent);transition:width .2s}
+.section{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;margin:16px 0;box-shadow:0 4px 18px #26382b08}.sectionhead{display:flex;gap:12px;align-items:flex-start;margin-bottom:16px}.num{display:grid;place-items:center;flex:0 0 36px;height:36px;background:var(--accent2);border-radius:12px;color:#315c4c;font-weight:800}
+.q{padding:14px 0;border-top:1px solid var(--line)}.q:first-of-type{border-top:0}.prompt{margin-bottom:9px}.blank{display:inline-block;min-width:95px;border-bottom:2px solid #aab9ae}
+select,input[type=text]{font:inherit;padding:9px 10px;border:1px solid #cfd5cd;border-radius:10px;background:white;color:var(--ink);max-width:100%}select{min-width:190px}input[type=text]{width:210px}
+.options{display:flex;gap:8px;flex-wrap:wrap}.option{display:flex;gap:7px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:9px 12px;cursor:pointer}.option:has(input:checked){border-color:var(--accent);background:#edf4ee}.feedback{font-size:13px;margin-top:7px;min-height:19px}.feedback.good{color:var(--good)}.feedback.bad{color:var(--bad)}.q.correct{background:#f2f8f2;margin:0 -10px;padding:14px 10px;border-radius:12px}.q.incorrect{background:#fff4f2;margin:0 -10px;padding:14px 10px;border-radius:12px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0}.btn{border:0;border-radius:12px;padding:12px 18px;font:inherit;font-weight:750;cursor:pointer}.primary{background:var(--accent);color:white}.secondary{background:#e8eae3;color:var(--ink)}.result{display:none;padding:22px;border-radius:20px;background:#e5ece3;margin-top:20px}.result.show{display:block}.score{font-size:36px;font-weight:850}.small{font-size:13px;color:var(--muted)}.wordbank{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.word{background:#f1f1e9;border-radius:8px;padding:5px 9px;font-size:14px}.footer{color:var(--muted);font-size:12px;text-align:center;margin-top:30px}
+@media(max-width:600px){.hero{padding:22px}.section{padding:17px}select{width:100%;min-width:0}.option{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+<div class="kicker">English · Homework</div>
+<h1>Phrasal verbs</h1>
+<div class="sub">Practice the meaning and use of 10 common phrasal verbs. Choose or type your answer — feedback appears immediately, and you can review your mistakes at the end.</div>
+<div class="pills"><span class="pill">10 phrasal verbs</span><span class="pill">20 questions</span><span class="pill">Instant feedback</span></div>
+</header>
+<div class="progressbox"><strong>Your progress</strong><span id="progressText" style="float:right">0 / 20 answered</span><div class="bar"><div id="progressBar"></div></div></div>
+<div class="wordbank">
+<span class="word">look up</span><span class="word">take up</span><span class="word">wrap up</span><span class="word">give up</span><span class="word">bring up</span><span class="word">set up</span><span class="word">get along</span><span class="word">take after</span><span class="word">make up</span><span class="word">turn down</span>
+</div>
+
+<section class="section" id="part1"><div class="sectionhead"><div class="num">1</div><div><h2>Gap fill</h2><div class="small">Complete each sentence with the correct phrasal verb. Change the form if necessary.</div></div></div>
+<div id="gapQuestions"></div></section>
+<section class="section" id="part2"><div class="sectionhead"><div class="num">2</div><div><h2>Choose the meaning</h2><div class="small">Choose the best definition for the phrasal verb in bold.</div></div></div>
+<div id="choiceQuestions"></div></section>
+<section class="section" id="part3"><div class="sectionhead"><div class="num">3</div><div><h2>Choose the right verb</h2><div class="small">Select the phrasal verb that best completes the sentence.</div></div></div>
+<div id="sentenceQuestions"></div></section>
+<div class="actions"><button class="btn primary" id="finishBtn">Finish & see report</button><button class="btn secondary" id="resetBtn">Start again</button></div>
+<section class="result" id="result"><h2>Your results</h2><div class="score" id="score"></div><p id="summary"></p><div id="mistakes"></div><button class="btn primary" id="sendBtn">Send report to Telegram</button><p class="small" id="telegramStatus">Telegram sending requires a secure report endpoint configured by your teacher. No student data is sent anywhere until you press this button.</p></section>
+<div class="footer">Take your time — mistakes are part of learning 🌿</div>
+</div>
+<script>
+const gapData = [
+ {s:"I don't know this word. I'll ___ it ___ in an online dictionary.",a:"look up",alts:["look it up"],hint:"To search for information in a dictionary or online."},
+ {s:"Mia has ___ yoga recently, and she loves it.",a:"taken up",hint:"To start a hobby or activity."},
+ {s:"Let's ___ the meeting ___ and go home.",a:"wrap up",alts:["wrap the meeting up"],hint:"To finish something."},
+ {s:"Don't ___! You're making progress with your English.",a:"give up",hint:"To stop trying."},
+ {s:"He brought ___ the idea of travelling together.",a:"up",hint:"The expression is “bring up” — mention a topic."},
+ {s:"We need to ___ a meeting with the new client.",a:"set up",hint:"To arrange or organize something."},
+ {s:"Do you ___ ___ with your colleagues?",a:"get along",hint:"To have a friendly relationship."},
+ {s:"Ella ___ after her mother — they both love painting.",a:"takes",alts:["takes after"],hint:"To resemble a family member in character or appearance."},
+ {s:"They had an argument, but they ___ ___ the next day.",a:"made up",hint:"To become friends again after an argument."},
+ {s:"I offered him the job, but he ___ it ___.",a:"turned down",alts:["turned it down"],hint:"To refuse an offer or invitation."}
+];
+const choiceData = [
+ {s:'“I need to look up this phrase.”',opts:["search for its meaning","invent a story","refuse an offer"],a:0,why:"Look up = search for information."},
+ {s:'“She took up tennis last year.”',opts:["stopped playing tennis","started playing tennis","organized a tennis match"],a:1,why:"Take up = start a new hobby or activity."},
+ {s:'“Can we wrap up the discussion?”',opts:["make it longer","finish it","bring up a new topic"],a:1,why:"Wrap up = finish."},
+ {s:'“He gave up smoking.”',opts:["quit smoking","started smoking","put off smoking until tomorrow"],a:0,why:"Give up = stop doing something, often a habit."},
+ {s:'“Why did you bring up my exam?”',opts:["hide it","mention it","turn it down"],a:1,why:"Bring up = mention a topic."},
+ {s:'“They set up a new business.”',opts:["closed a business","started/established a business","refused a business offer"],a:1,why:"Set up = establish or arrange."},
+ {s:'“I get along with my flatmate.”',opts:["I have a good relationship with them","I look like them","I avoid talking to them"],a:0,why:"Get along = have a good relationship."},
+ {s:'“He takes after his dad.”',opts:["He argues with his dad","He resembles his dad","He works for his dad"],a:1,why:"Take after = resemble a family member."},
+ {s:'“They made up after the fight.”',opts:["They invented an excuse","They reconciled","They started a club"],a:1,why:"Make up = become friends again after an argument."},
+ {s:'“She turned down the invitation.”',opts:["She accepted it","She postponed it","She refused it"],a:2,why:"Turn down = refuse an offer or invitation."}
+];
+const sentenceData = [
+ {s:"Could you ___ a table for six at the restaurant?",opts:["set up","give up","take after"],a:0,why:"Set up can mean arrange or organize."},
+ {s:"My brother and I don't always ___, but we care about each other.",opts:["get along","look up","wrap up"],a:0,why:"Get along = have a good relationship."},
+ {s:"She ___ the offer because the salary was too low.",opts:["turned down","took up","made up"],a:0,why:"Turn down = refuse."},
+ {s:"I think we should ___ this topic at the next meeting.",opts:["bring up","take after","give up"],a:0,why:"Bring up = mention or introduce a topic."},
+ {s:"He ___ a funny story to explain why he was late.",opts:["made up","got along","looked up"],a:0,why:"Make up can mean invent a story."}
+];
+const answers={}; const meta={};
+function el(tag,attrs={},txt=""){const n=document.createElement(tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));if(txt)n.textContent=txt;return n}
+function renderGap(){
+ const root=document.getElementById("gapQuestions");
+ gapData.forEach((q,i)=>{let d=el("div",{class:"q",id:"q-g"+i});let p=el("div",{class:"prompt"},`${i+1}. ${q.s}`);let inp=el("input",{type:"text",autocomplete:"off",placeholder:"Type the phrasal verb","aria-label":`Answer ${i+1}`});inp.addEventListener("input",()=>checkGap(i,inp.value));let f=el("div",{class:"feedback",id:"f-g"+i});d.append(p,inp,f);root.append(d);meta["g"+i]={type:"gap",index:i,answer:q.a,question:q.s,hint:q.hint};});
+}
+function norm(s){return s.toLowerCase().trim().replace(/[.,!?]/g,"").replace(/\s+/g," ")}
+function checkGap(i,val){let q=gapData[i],v=norm(val),accepted=[q.a,...(q.alts||[])].map(norm);let ok=accepted.includes(v);let key="g"+i;answers[key]={value:val,correct:ok,answered:!!v};feedback(key,ok,!!v,ok?"Correct! ✓":(v?`Not quite. Hint: ${q.hint}`:""));updateProgress();}
+function renderChoices(data,rootId,prefix){
+ const root=document.getElementById(rootId);data.forEach((q,i)=>{let key=prefix+i,d=el("div",{class:"q",id:"q-"+key});d.append(el("div",{class:"prompt"},`${i+1}. ${q.s}`));let opts=el("div",{class:"options"});q.opts.forEach((op,j)=>{let label=el("label",{class:"option"}),radio=el("input",{type:"radio",name:key,value:j});radio.addEventListener("change",()=>{let ok=j===q.a;answers[key]={value:op,correct:ok,answered:true};feedback(key,ok,true,ok?"Correct! ✓":`Not quite. ${q.why}`);updateProgress()});label.append(radio,document.createTextNode(op));opts.append(label)});let f=el("div",{class:"feedback",id:"f-"+key});d.append(opts,f);root.append(d);meta[key]={type:"choice",index:i,answer:q.opts[q.a],question:q.s,hint:q.why};});
+}
+function feedback(key,ok,answered,msg){let f=document.getElementById("f-"+key),q=document.getElementById("q-"+key);f.textContent=msg;f.className="feedback "+(answered?(ok?"good":"bad"):"");q.classList.toggle("correct",answered&&ok);q.classList.toggle("incorrect",answered&&!ok)}
+function updateProgress(){let count=Object.values(answers).filter(x=>x.answered).length;document.getElementById("progressText").textContent=`${count} / 25 answered`;document.getElementById("progressBar").style.width=(count/25*100)+"%"}
+renderGap();renderChoices(choiceData,"choiceQuestions","c");
+renderChoices(sentenceData,"sentenceQuestions","s");
+function getTotal(){return 25}
+document.getElementById("finishBtn").addEventListener("click",()=>{
+ let total=getTotal(),answered=Object.values(answers).filter(x=>x.answered).length,correct=Object.values(answers).filter(x=>x.answered&&x.correct).length;
+ document.getElementById("result").classList.add("show");document.getElementById("score").textContent=`${correct} / ${total}`;document.getElementById("summary").textContent=`You answered ${answered} of ${total} questions. Accuracy: ${answered?Math.round(correct/answered*100):0}% of answered questions.`;
+ let mistakes=document.getElementById("mistakes");mistakes.innerHTML="";let wrong=Object.entries(meta).filter(([k])=>!answers[k]?.correct);
+ if(!wrong.length)mistakes.textContent="No mistakes among answered questions — great work!";
+ else {mistakes.append(el("h3",{},"Review these answers"));wrong.forEach(([k,m])=>{let p=el("p");let a=answers[k];p.textContent=`${m.question} Your answer: ${a?.answered?a.value:"(not answered)"}. Suggested answer: ${m.answer}. ${m.hint||""}`;mistakes.append(p)})}
+ document.getElementById("result").scrollIntoView({behavior:"smooth",block:"start"});
+});
+document.getElementById("resetBtn").addEventListener("click",()=>location.reload());
+document.getElementById("sendBtn").addEventListener("click",async()=>{
+ const endpoint=""; // Add your secure webhook URL here (see README).
+ const status=document.getElementById("telegramStatus");
+ if(!endpoint){status.textContent="Not connected yet. Your teacher needs to add a secure webhook URL to this file. Do not put a Telegram bot token directly in public HTML.";return}
+ const correct=Object.values(answers).filter(x=>x.answered&&x.correct).length;
+ const report={title:"Phrasal Verbs Homework",total:25,answered:Object.values(answers).filter(x=>x.answered).length,correct,answers:Object.entries(meta).map(([k,m])=>({question:m.question,answer:answers[k]?.value||"",correct:!!answers[k]?.correct}))};
+ try{status.textContent="Sending…";const r=await fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(report)});if(!r.ok)throw new Error("Request failed");status.textContent="Report sent successfully!";}catch(e){status.textContent="Could not send the report. Please check the webhook URL or contact your teacher."}
+});
+</script>
+</body></html>
